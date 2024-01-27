@@ -51,34 +51,23 @@ L3:	.string "Second integer: "
 	leaq -16(%rax), %rax
 	movq (%rax), %rax
 	pushq %rax
-	popq %rax
-	addq %rax, (%rsp)
 	movq %rbp, %rax
-	leaq -24(%rax), %rax
-	popq (%rax)
-	movq %rbp, %rax
-	leaq -24(%rax), %rax
+	leaq -16(%rax), %rax
 	movq (%rax), %rax
 	pushq %rax
 	movq %rbp, %rax
 	leaq -16(%rax), %rax
 	movq (%rax), %rax
 	pushq %rax
+	popq %rbx
+	popq %rax
+	cqto
+	idivq %rbx
+	pushq %rdx
 	popq %rax
 	addq %rax, (%rsp)
-	movq %rbp, %rax
-	leaq -24(%rax), %rax
-	popq (%rax)
-	movq %rbp, %rax
-	leaq -24(%rax), %rax
-	movq (%rax), %rax
-	pushq %rax
-	movq %rbp, %rax
-	leaq -16(%rax), %rax
-	movq (%rax), %rax
-	pushq %rax
 	popq %rax
-	addq %rax, (%rsp)
+	subq %rax, (%rsp)
 	movq %rbp, %rax
 	leaq -24(%rax), %rax
 	popq (%rax)

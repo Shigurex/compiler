@@ -4,12 +4,9 @@
 main:
 	pushq %rbp
 	movq %rsp, %rbp
-	leaq L1(%rip), %rdi
-	movq $0, %rax
-	callq printf
-	movq $0, %rax
-	leaveq
-	retq
+	movq $5, %rax
+	movq $2, %rbx
+	
 
 	.data
 L1:	.string "Hello World\n"

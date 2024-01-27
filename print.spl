@@ -7,7 +7,7 @@
         sprint ("Second integer: ");
         scan (b);
         m = a;
-        m += b;
+        m -= b + b ^ b;
         sprint ("Answer = ");
         iprint (m) ;
         sprint ("\n");

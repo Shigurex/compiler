@@ -23,6 +23,7 @@ rule lexer = parse
 | '\"'[^'\"']*'\"' as str { STR str }
 | '='                     { ASSIGN }
 | "+="                    { PEQ }
+| "-="                    { MEQ }
 | "=="                    { EQ }
 | "!="                    { NEQ }
 | '>'                     { GT }
@@ -34,6 +35,7 @@ rule lexer = parse
 | '*'                     { TIMES }
 | '/'                     { DIV }
 | '%'                     { MOD }
+| '^'                     { POWER }
 | '{'                     { LB  }
 | '}'                     { RB  }
 | '['                     { LS }

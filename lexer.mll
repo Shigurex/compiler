@@ -40,6 +40,7 @@ rule lexer = parse
 | '%'                     { MOD }
 | '^'                     { POWER }
 | "++"                    { INC }
+| "--"                    { DEC }
 | '{'                     { LB  }
 | '}'                     { RB  }
 | '['                     { LS }

@@ -232,6 +232,42 @@ and trans_exp ast nest env = match ast with
                                                   ^ sprintf "\tjmp L%d\n" l2
                                                   ^ sprintf "L%d:\n" l1
                                                   ^ "\tpushq %rbx\n"
+                  (* 後置インクリメントのコード*)
+                  | CallAssignFunc("_++", v) ->
+                                            trans_var v nest env
+                                            ^ "\tmovq (%rax), %rbx\n"
+                                            ^ "\tpushq %rbx\n"
+                                            ^ "\tmovq $1, %rdx\n"
+                                            ^ "\taddq %rdx, %rbx\n"
+                                            ^ "\tmovq %rbx, (%rax)\n"
+                                            ^ "\tpopq %rax\n"
+                                            ^ "\tpushq %rax\n"
+                  (* 前置インクリメントのコード*)
+                  | CallAssignFunc("++_", v) ->
+                                            trans_var v nest env
+                                            ^ "\tmovq (%rax), %rbx\n"
+                                            ^ "\tmovq $1, %rdx\n"
+                                            ^ "\taddq %rdx, %rbx\n"
+                                            ^ "\tmovq %rbx, (%rax)\n"
+                                            ^ "\tpushq %rbx\n"
+                  (* 後置デクリメントのコード*)
+                  | CallAssignFunc("_--", v) ->
+                                            trans_var v nest env
+                                            ^ "\tmovq (%rax), %rbx\n"
+                                            ^ "\tpushq %rbx\n"
+                                            ^ "\tmovq $1, %rdx\n"
+                                            ^ "\tsubq %rdx, %rbx\n"
+                                            ^ "\tmovq %rbx, (%rax)\n"
+                                            ^ "\tpopq %rax\n"
+                                            ^ "\tpushq %rax\n"
+                  (* 前置デクリメントのコード*)
+                  | CallAssignFunc("--_", v) ->
+                                            trans_var v nest env
+                                            ^ "\tmovq (%rax), %rbx\n"
+                                            ^ "\tmovq $1, %rdx\n"
+                                            ^ "\tsubq %rdx, %rbx\n"
+                                            ^ "\tmovq %rbx, (%rax)\n"
+                                            ^ "\tpushq %rbx\n"
                   (* 反転のコード *)
                   | CallFunc("!",  arg::_) -> 
                                              trans_exp arg nest env

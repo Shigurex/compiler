@@ -124,8 +124,14 @@ and type_exp ast env =
                (check_int (type_exp left env); check_int(type_exp right env); INT)
           | CallFunc ("!", [arg]) -> 
                (check_int (type_exp arg env); INT)
-          | CallFunc ("++", [arg]) -> 
-               (check_int (type_exp arg env); INT)
+          | CallAssignFunc ("++_", s) -> 
+               type_var s env
+          | CallAssignFunc ("_++", s) -> 
+               type_var s env
+          | CallAssignFunc ("--_", s) -> 
+               type_var s env
+          | CallAssignFunc ("_--", s) -> 
+               type_var s env
           | CallFunc (s, el) -> 
                let entry = env s in 
                   (match entry with

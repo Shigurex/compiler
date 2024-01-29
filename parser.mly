@@ -9,7 +9,7 @@ open Ast
 %token <int> NUM
 %token <string> STR ID
 %token INT IF WHILE DO FOR TO SPRINT IPRINT SCAN EQ NEQ GT LT GE LE ELSE RETURN NEW
-%token PLUS MINUS INC TIMES DIV MOD POWER LB RB LS RS LP RP ASSIGN PEQ MEQ SEMI COMMA TYPE VOID
+%token PLUS MINUS INC DEC TIMES DIV MOD POWER LB RB LS RS LP RP ASSIGN PEQ MEQ SEMI COMMA TYPE VOID
 %type <Ast.stmt> prog
 
 
@@ -19,7 +19,7 @@ open Ast
 %left TIMES DIV
 %left POWER
 %nonassoc UMINUS
-%nonassoc INC            /* highest precedence */
+%nonassoc INC DEC        /* highest precedence */
 
 
 %start prog           /* the entry point */
@@ -95,6 +95,10 @@ expr : NUM { IntExp $1  }
      | ID { VarExp (Var $1) }
      | ID LP aargs_opt RP { CallFunc ($1, $3) } 
      | ID LS expr RS  { VarExp (IndexedVar (Var $1, $3)) }
+     | ID INC { CallAssignFunc ("_++", Var $1) }
+     | INC ID { CallAssignFunc ("++_", Var $2) }
+     | ID DEC { CallAssignFunc ("_--", Var $1) }
+     | DEC ID { CallAssignFunc ("--_", Var $2) }
      | expr PLUS expr { CallFunc ("+", [$1; $3]) }
      | expr MINUS expr { CallFunc ("-", [$1; $3]) }
      | expr TIMES expr { CallFunc ("*", [$1; $3]) }

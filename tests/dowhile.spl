@@ -1,0 +1,12 @@
+{
+	int a;
+
+	sprint ("Input a: ");
+	scan (a);
+	do {
+		sprint ("Inside loop: a = ");
+		iprint (a);
+		sprint ("\n");
+		a -= 1;
+	} while (a > 0)
+}

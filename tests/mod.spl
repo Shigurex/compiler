@@ -1,0 +1,16 @@
+{
+	int a, b, m;
+
+	sprint ("You must give 2 integers.\n");
+	sprint ("First integer: ");
+	scan (a);
+	sprint ("Second integer: ");
+	scan (b);
+	m = a % b;
+	iprint (a);
+	sprint (" %% ");
+	iprint (b);
+	sprint (" = ");
+	iprint (m);
+	sprint ("\n");
+}

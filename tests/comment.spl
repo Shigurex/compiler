@@ -1,0 +1,6 @@
+{
+	// this is a comment
+	sprint ("Hello\n");
+	// comment can be anywhere
+	// sprint("Compiler\n");
+}

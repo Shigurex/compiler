@@ -1,0 +1,9 @@
+{
+   int x, rlt;
+
+   rlt = 1;
+   for (x = 0 .. 3) 
+        rlt = rlt * 3;
+   iprint(rlt);
+   sprint("\n");
+}

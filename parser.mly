@@ -8,8 +8,8 @@ open Ast
 /* File parser.mly */
 %token <int> NUM
 %token <string> STR ID
-%token INT IF WHILE SPRINT IPRINT SCAN EQ NEQ GT LT GE LE ELSE RETURN NEW
-%token PLUS MINUS TIMES DIV MOD POWER LB RB LS RS LP RP ASSIGN PEQ MEQ SEMI COMMA TYPE VOID
+%token INT IF WHILE DO FOR TO SPRINT IPRINT SCAN EQ NEQ GT LT GE LE ELSE RETURN NEW
+%token PLUS MINUS INC TIMES DIV MOD POWER LB RB LS RS LP RP ASSIGN PEQ MEQ SEMI COMMA TYPE VOID
 %type <Ast.stmt> prog
 
 
@@ -18,7 +18,8 @@ open Ast
 %left MOD
 %left TIMES DIV
 %left POWER
-%nonassoc UMINUS      /* highest precedence */
+%nonassoc UMINUS
+%nonassoc INC            /* highest precedence */
 
 
 %start prog           /* the entry point */
@@ -67,6 +68,8 @@ stmt : ID ASSIGN expr SEMI    { Assign (Var $1, $3) }
      | IF LP cond RP stmt ELSE stmt 
                               { If ($3, $5, Some $7) }
      | WHILE LP cond RP stmt  { While ($3, $5) }
+     | DO stmt WHILE LP cond RP { Block ([], [$2; While ($5, $2)]) }
+     | FOR LP ID ASSIGN expr TO expr RP stmt { Block ([], [Assign (Var $3, $5); While (CallFunc ("<", [VarExp (Var $3); $7]), Block ([], [$9; Assign (Var $3, CallFunc ("+", [VarExp (Var $3); IntExp (1)]))] ))]) }
      | SPRINT LP STR RP SEMI  { CallProc ("sprint", [StrExp $3]) }
      | IPRINT LP expr RP SEMI { CallProc ("iprint", [$3]) }
      | SCAN LP ID RP SEMI  { CallProc ("scan", [VarExp (Var $3)]) }

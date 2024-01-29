@@ -216,13 +216,22 @@ and trans_exp ast nest env = match ast with
                                            ^ "\tpushq %rdx\n"
                   (* ^のコード *)
                   | CallFunc ("^", [left; right]) ->
-                                             trans_exp left nest env
-                                           ^ trans_exp right nest env
-                                           ^ "\tpopq %rbx\n"
-                                           ^ "\tpopq %rax\n"
-                                           ^ "\tcqto\n"
-                                           ^ "\tidivq %rbx\n"
-                                           ^ "\tpushq %rdx\n"
+                                             let l1 = incLabel() in
+                                                let l2 = incLabel() in
+                                                    trans_exp left nest env
+                                                  ^ trans_exp right nest env
+                                                  ^ "\tpopq %rbx\n"
+                                                  ^ "\tpopq %rax\n"
+                                                  ^ "\tpushq %rbx\n"
+                                                  ^ "\tmovq $1, %rbx\n"
+                                                  ^ sprintf "L%d:\n" l2
+                                                  ^ "\tcmpq $0, (%rsp)\n"
+                                                  ^ sprintf "\tjle L%d\n" l1
+                                                  ^ "\timulq %rax, %rbx\n"
+                                                  ^ "\tsubq $1, (%rsp)\n"
+                                                  ^ sprintf "\tjmp L%d\n" l2
+                                                  ^ sprintf "L%d:\n" l1
+                                                  ^ "\tpushq %rbx\n"
                   (* 反転のコード *)
                   | CallFunc("!",  arg::_) -> 
                                              trans_exp arg nest env

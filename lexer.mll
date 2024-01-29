@@ -12,6 +12,9 @@ rule lexer = parse
 | "if"                    { IF }
 | "else"                  { ELSE }
 | "while"                 { WHILE }
+| "for"                   { FOR }
+| ".."                    { TO }
+| "do"                    { DO }
 | "scan"                  { SCAN }
 | "sprint"                { SPRINT }
 | "iprint"                { IPRINT }
@@ -36,6 +39,7 @@ rule lexer = parse
 | '/'                     { DIV }
 | '%'                     { MOD }
 | '^'                     { POWER }
+| "++"                    { INC }
 | '{'                     { LB  }
 | '}'                     { RB  }
 | '['                     { LS }

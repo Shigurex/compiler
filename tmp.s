@@ -6,79 +6,51 @@ main:
 	pushq %rbp
 	movq %rsp, %rbp
 	subq $32, %rsp
-	.data
-L1:	.string "You must give 2 integers.\n"
-	.text
-	leaq L1(%rip), %rdi
-	movq $0, %rax
-	callq printf
-	.data
-L2:	.string "First integer: "
-	.text
-	leaq L2(%rip), %rdi
-	movq $0, %rax
-	callq printf
-	movq %rbp, %rax
-	leaq -8(%rax), %rax
-	movq %rax, %rsi
-	leaq IO(%rip), %rdi
-	movq $0, %rax
-	callq scanf
-	.data
-L3:	.string "Second integer: "
-	.text
-	leaq L3(%rip), %rdi
-	movq $0, %rax
-	callq printf
+	pushq $1
 	movq %rbp, %rax
 	leaq -16(%rax), %rax
-	movq %rax, %rsi
-	leaq IO(%rip), %rdi
-	movq $0, %rax
-	callq scanf
+	popq (%rax)
+	subq $16, %rsp
+	pushq $0
+	movq %rbp, %rax
+	leaq -8(%rax), %rax
+	popq (%rax)
+L2:
 	movq %rbp, %rax
 	leaq -8(%rax), %rax
 	movq (%rax), %rax
 	pushq %rax
+	pushq $3
+	popq %rax
+	popq %rbx
+	cmpq %rax, %rbx
+	jge L1
+	subq $16, %rsp
 	movq %rbp, %rax
-	leaq -24(%rax), %rax
+	leaq -16(%rax), %rax
+	movq (%rax), %rax
+	pushq %rax
+	pushq $3
+	popq %rax
+	imulq (%rsp), %rax
+	movq %rax, (%rsp)
+	movq %rbp, %rax
+	leaq -16(%rax), %rax
 	popq (%rax)
 	movq %rbp, %rax
-	leaq -24(%rax), %rax
+	leaq -8(%rax), %rax
 	movq (%rax), %rax
 	pushq %rax
-	movq %rbp, %rax
-	leaq -16(%rax), %rax
-	movq (%rax), %rax
-	pushq %rax
-	movq %rbp, %rax
-	leaq -16(%rax), %rax
-	movq (%rax), %rax
-	pushq %rax
-	movq %rbp, %rax
-	leaq -16(%rax), %rax
-	movq (%rax), %rax
-	pushq %rax
-	popq %rbx
-	popq %rax
-	cqto
-	idivq %rbx
-	pushq %rdx
+	pushq $1
 	popq %rax
 	addq %rax, (%rsp)
-	popq %rax
-	subq %rax, (%rsp)
 	movq %rbp, %rax
-	leaq -24(%rax), %rax
+	leaq -8(%rax), %rax
 	popq (%rax)
-	.data
-L4:	.string "Answer = "
-	.text
-	leaq L4(%rip), %rdi
-	movq $0, %rax
-	callq printf
+	jmp L2
+L1:
 	movq %rbp, %rax
-	leaq -24(%rax), %rax
+	leaq -16(%rax), %rax
 	movq (%rax), %rax
 	pushq %rax
 	popq  %rsi
@@ -86,9 +58,9 @@ L4:	.string "Answer = "
 	movq $0, %rax
 	callq printf
 	.data
-L5:	.string "\n"
+L3:	.string "\n"
 	.text
-	leaq L5(%rip), %rdi
+	leaq L3(%rip), %rdi
 	movq $0, %rax
 	callq printf
 	leaveq

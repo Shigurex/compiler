@@ -5,18 +5,18 @@
    sprint("[1] x = ");
    iprint(x);
    sprint("\n");
-   y = x++;
+   y = ++x;
    sprint("[2] x = ");
    iprint(x);
    sprint(", y = ");
    iprint(y);
-   sprint("  <- y = x++\n");
-   z = x++ + y++;
+   sprint("  <- y = ++x\n");
+   z = ++x + ++y;
    sprint("[3] x = ");
    iprint(x);
    sprint(", y = ");
    iprint(y);
    sprint(", z = ");
    iprint(z);
-   sprint("  <- z = x++ + y++\n");
+   sprint("  <- z = ++x + ++y\n");
 }

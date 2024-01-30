@@ -222,16 +222,15 @@ and trans_exp ast nest env = match ast with
                                                   ^ trans_exp right nest env
                                                   ^ "\tpopq %rbx\n"
                                                   ^ "\tpopq %rax\n"
-                                                  ^ "\tpushq %rbx\n"
-                                                  ^ "\tmovq $1, %rbx\n"
+                                                  ^ "\tmovq $1, %rdx\n"
                                                   ^ sprintf "L%d:\n" l2
-                                                  ^ "\tcmpq $0, (%rsp)\n"
+                                                  ^ "\tcmpq $0, %rbx\n"
                                                   ^ sprintf "\tjle L%d\n" l1
-                                                  ^ "\timulq %rax, %rbx\n"
-                                                  ^ "\tsubq $1, (%rsp)\n"
+                                                  ^ "\timulq %rax, %rdx\n"
+                                                  ^ "\tsubq $1, %rbx\n"
                                                   ^ sprintf "\tjmp L%d\n" l2
                                                   ^ sprintf "L%d:\n" l1
-                                                  ^ "\tpushq %rbx\n"
+                                                  ^ "\tpushq %rdx\n"
                   (* 後置インクリメントのコード*)
                   | CallAssignFunc("_++", v) ->
                                             trans_var v nest env
@@ -240,8 +239,6 @@ and trans_exp ast nest env = match ast with
                                             ^ "\tmovq $1, %rdx\n"
                                             ^ "\taddq %rdx, %rbx\n"
                                             ^ "\tmovq %rbx, (%rax)\n"
-                                            ^ "\tpopq %rax\n"
-                                            ^ "\tpushq %rax\n"
                   (* 前置インクリメントのコード*)
                   | CallAssignFunc("++_", v) ->
                                             trans_var v nest env
